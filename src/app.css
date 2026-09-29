@@ -1,0 +1,68 @@
+:root {
+  /* Chalkboard palette — toned down, academic */
+  --board: #26332c;
+  --board-2: #202b25;
+  --chalk: #eef0e6;
+  --chalk-dim: #a9b3a4;
+  --chalk-faint: rgba(238, 240, 230, 0.16);
+
+  /* Ranking system accents (muted chalk pastels) */
+  --qs: #e6cf87; /* chalk yellow  */
+  --the: #d69a9a; /* dusty rose    */
+  --us: #9ab6d4; /* dusty blue    */
+
+  /* Methodology category colours */
+  --c-rep: #e6cf87;
+  --c-res: #9ab6d4;
+  --c-teach: #b9d0a6;
+  --c-intl: #d69a9a;
+  --c-other: #c3b6d8;
+
+  /* Movement accents */
+  --accent-good: #a9d3a0;
+  --accent-warn: #dfa07f;
+
+  /* Region accents (Idea B — Asia-first piece) */
+  --r-asia: #d4a574; /* warm chalk ochre  */
+  --r-na: #9ab6d4; /* dusty blue        */
+  --r-europe: #b9d0a6; /* chalk sage      */
+  --r-rest: #c3b6d8; /* dusty lilac       */
+
+  --font-chalk: 'Kalam', 'Comic Sans MS', cursive;
+  --font-body: 'Lucida Bright', 'Lucida Sans Unicode', Georgia, serif;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--board);
+  /* faint chalk-dust texture */
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.025) 0, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.02) 0, transparent 40%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  color: var(--chalk);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--qs);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--qs) 45%, transparent);
+  color: var(--chalk);
+}
