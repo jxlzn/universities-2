@@ -312,7 +312,7 @@
 <h2 class="section-head">Where the rankings disagree · THE vs QS</h2>
 
 <!-- ============================ GAP ============================ -->
-<Scrolly steps={gapSteps} bind:active={gapActive}>
+<Scrolly steps={gapSteps} bind:active={gapActive} overlay>
   {#snippet graphic(active)}
     <GapChart
       highlight={gapHi[active] ?? []}
@@ -461,27 +461,45 @@
     padding: 2rem;
     overflow: hidden;
   }
+  /* Fills the pinned hero and lets the campus illustration absorb any height
+     shortfall, so the copy always fits inside the viewport. */
   .hero-inner {
+    width: 100%;
     max-width: 900px;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0;
     will-change: opacity, transform;
+  }
+  .hero-inner > :not(.campus-stage):not(.headline-stage) {
+    flex: 0 0 auto;
   }
 
   .headline-stage {
     position: relative;
-    min-height: clamp(150px, 24vw, 230px);
-    margin-bottom: 1.8rem;
+    /* Preferred size only: shrinks with the viewport height instead of overflowing. */
+    flex: 0 1 clamp(150px, 24vw, 230px);
+    min-height: 0;
+    margin-bottom: min(1.8rem, 3vh);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
   .campus-stage {
     width: 100%;
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
     margin: 0 auto 0.4rem;
     opacity: 0.95;
   }
   .dek {
-    font-size: clamp(1.05rem, 2vw, 1.4rem);
-    line-height: 1.65;
+    font-size: 1.2rem; /* same as .prose body text */
+    line-height: 1.55;
     color: var(--chalk);
     max-width: 720px;
     margin: 0 auto;
@@ -495,7 +513,7 @@
     transform: translateY(0);
   }
   .byline {
-    margin: 1.1rem auto 0;
+    margin: min(1.1rem, 2vh) auto 0;
     font-family: var(--font-body);
     font-size: 0.82rem;
     font-weight: 400;
@@ -512,7 +530,7 @@
   /* Flows below the dek instead of pinning to the hero's bottom edge, so it
      never collides with the dek text on shorter viewports. */
   .scroll-cue {
-    margin: 1.8rem 0 0;
+    margin: min(1.8rem, 2.5vh) 0 0;
     text-align: center;
     font-family: var(--font-chalk);
     font-size: 1rem;
@@ -538,7 +556,7 @@
   @media (min-width: 821px) {
     .scroll-cue {
       font-size: 1.25rem;
-      margin-top: 2.2rem;
+      margin-top: min(2.2rem, 2.5vh);
     }
     .scroll-arrow {
       font-size: 1.4em;
@@ -696,6 +714,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100dvh;
     z-index: 1;
     display: flex;
     align-items: center;
@@ -760,13 +779,13 @@
       margin-bottom: 3rem;
     }
     .hero { padding: 1rem 0.625rem; }
-    .headline-stage { min-height: clamp(185px, 36vw, 260px); }
+    .headline-stage { flex-basis: clamp(185px, 36vw, 260px); }
     .campus-stage { margin-bottom: 0.15rem; }
     /* Phones/tablets: chart fills the screen, cards float over it from the bottom */
     .jump-wrap { display: block; padding: 0; max-width: none; }
     .jump-graphic { width: 100%; overflow: hidden; }
-    .jump-steps { margin-top: -100vh; pointer-events: none; }
-    .jstep { align-items: flex-end; justify-content: center; padding-bottom: 4vh; }
+    .jump-steps { margin-top: -100vh; margin-top: -100dvh; pointer-events: none; }
+    .jstep { min-height: 100dvh; align-items: flex-end; justify-content: center; padding-bottom: 4vh; }
     .step-inner { width: min(92vw, 380px); font-size: 16px; }
     .dek { font-size: 16px; }
     .prose { font-size: 16px; }

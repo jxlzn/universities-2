@@ -410,10 +410,16 @@
     width: min(94vw, 640px);
     margin: 0 auto;
     pointer-events: none;
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
   svg {
     width: 100%;
     height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
     display: block;
     overflow: visible;
   }

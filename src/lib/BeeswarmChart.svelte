@@ -1,6 +1,7 @@
 <script>
   import { universities, regions, regionOf, the27Pending } from './data.js';
   import { clamp, lerp, easeInOut } from './scroll.js';
+  import ChartFrame from './ChartFrame.svelte';
 
   // t: 0..1 scroll progress (drives left→right leap)
   // highlight: university ids to spotlight
@@ -108,10 +109,11 @@
   const ticks = [1, 10, 20, 30, 40, 50];
 </script>
 
-<div class="chart">
-  <h4 class="chart-title">THE {yearL} → {yearR}</h4>
-  <p class="sub">Each mortarboard is a university. Colour = region.</p>
-
+<ChartFrame
+  title="THE {yearL} → {yearR}"
+  sub="Each mortarboard is a university. Colour = region."
+  {focusRegion}
+>
   <svg viewBox="0 0 {vbW} {vbH}" preserveAspectRatio="xMidYMid meet">
     <defs>
       <symbol id="hat-bee" viewBox="0 0 100 53.31">
@@ -169,46 +171,16 @@
     {/each}
   </svg>
 
-  <div class="legend">
-    {#each Object.values(regions) as r}
-      <div class="lg" class:dim={focusRegion && focusRegion !== r.key}>
-        <i style="background:{r.color}"></i>{r.label}
-      </div>
-    {/each}
-  </div>
-  {#if the27Pending}
-    <p class="chart-note">
-      Provisional: 2027 ranks currently mirror 2026. Replace `the27` in data.js on release day.
-    </p>
-  {/if}
-</div>
+  {#snippet notes()}
+    {#if the27Pending}
+      <p class="chart-note">
+        Provisional: 2027 ranks currently mirror 2026. Replace `the27` in data.js on release day.
+      </p>
+    {/if}
+  {/snippet}
+</ChartFrame>
 
 <style>
-  .chart {
-    width: min(94%, 520px);
-    margin: 0 auto;
-  }
-  .chart-title {
-    font-family: var(--font-chalk);
-    font-weight: 400;
-    font-size: clamp(1.2rem, 2.5vw, 1.5rem);
-    margin: 0 0 0.2rem;
-    text-align: center;
-    color: var(--chalk);
-  }
-  .sub {
-    margin: 0 0 0.6rem;
-    text-align: center;
-    font-family: var(--font-body);
-    font-size: 0.82rem;
-    color: var(--chalk-dim);
-    font-style: italic;
-  }
-  svg {
-    width: 100%;
-    height: auto;
-    overflow: visible;
-  }
   .grid {
     stroke: var(--chalk-faint);
     stroke-width: 0.2;
@@ -216,12 +188,12 @@
   .tick {
     fill: var(--chalk-dim);
     font-family: var(--font-body);
-    font-size: 3px;
+    font-size: 4px;
   }
   .col-label {
     fill: var(--chalk);
     font-family: var(--font-chalk);
-    font-size: 4px;
+    font-size: 5px;
   }
   .trail {
     stroke-width: 0.35;
@@ -240,41 +212,9 @@
   .lbl {
     fill: var(--chalk);
     font-family: var(--font-body);
-    font-size: 3.4px;
+    font-size: 4.4px;
     paint-order: stroke;
     stroke: var(--board);
-    stroke-width: 0.7;
-  }
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem 1rem;
-    margin-top: 0.6rem;
-  }
-  .lg {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    font-size: 0.78rem;
-    color: var(--chalk-dim);
-    font-family: var(--font-body);
-    transition: opacity 0.4s ease;
-  }
-  .lg.dim {
-    opacity: 0.3;
-  }
-  .lg i {
-    width: 11px;
-    height: 11px;
-    border-radius: 2px;
-  }
-  .chart-note {
-    margin: 0.55rem 0 0;
-    text-align: center;
-    font-size: 0.7rem;
-    color: var(--accent-warn);
-    font-style: italic;
-    font-family: var(--font-body);
+    stroke-width: 0.9;
   }
 </style>

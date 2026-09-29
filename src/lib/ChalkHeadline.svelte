@@ -271,6 +271,7 @@
 <div class="chalk-headline-wrap">
   <svg
     class="chalk-headline"
+    style:max-width="{maxWidth}px"
     width={maxWidth}
     height={svgHeight}
     viewBox="0 0 {maxWidth} {svgHeight}"
@@ -371,11 +372,21 @@
 <style>
   .chalk-headline-wrap {
     position: relative;
-    margin: 0 auto;
+    width: 100%;
+    margin: auto 0;
+    flex: 0 1 auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
   }
+  /* Scales down (viewBox, "meet") when the hero runs short on height. */
   .chalk-headline {
     display: block;
-    max-width: 100%;
+    width: 100%;
+    height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+    margin: 0 auto;
     overflow: visible;
   }
   .chalk-char {

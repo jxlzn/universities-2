@@ -1,7 +1,9 @@
 <script>
   // Generic scrollytelling driver. Renders sticky `graphic` + scrolling steps,
   // and reports the index of the step currently near the middle of the screen.
-  let { steps = [], active = $bindable(-1), graphic } = $props();
+  // overlay: on small screens, the graphic fills the screen and the step cards
+  // float over it from the bottom (same behaviour as the beeswarm section).
+  let { steps = [], active = $bindable(-1), graphic, overlay = false } = $props();
 
   let stepEls = $state([]);
 
@@ -22,7 +24,7 @@
   });
 </script>
 
-<div class="scrolly">
+<div class="scrolly" class:overlay>
   <div class="graphic">
     {@render graphic(active)}
   </div>
@@ -51,6 +53,7 @@
     position: sticky;
     top: 0;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,6 +106,36 @@
       pointer-events: auto;
       max-width: 340px;
       font-size: 16px;
+    }
+
+    /* Full-screen graphic with cards floating over it from the bottom */
+    .overlay.scrolly {
+      padding: 0;
+      max-width: none;
+    }
+    .overlay .graphic {
+      top: 0;
+      height: 100vh;
+      height: 100dvh;
+      width: 100%;
+      overflow: hidden;
+      align-items: center;
+      padding-top: 0;
+    }
+    .overlay .steps {
+      margin-top: -100vh;
+      margin-top: -100dvh;
+    }
+    .overlay .step {
+      min-height: 100vh;
+      min-height: 100dvh;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 4vh;
+    }
+    .overlay .step-inner {
+      width: min(92vw, 380px);
+      max-width: none;
     }
   }
 </style>

@@ -111,6 +111,14 @@
 <style>
   .chart {
     width: min(94%, 560px);
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    padding: 0.75rem 0;
+  }
+  .chart > :not(svg) {
+    flex: 0 0 auto;
   }
   .chart-title {
     font-family: var(--font-chalk);
@@ -123,13 +131,15 @@
   .sub {
     margin: 0 0 1rem;
     font-family: var(--font-body);
-    font-size: 0.82rem;
+    font-size: 1rem;
     color: var(--chalk-dim);
     font-style: italic;
   }
   svg {
     width: 100%;
     height: auto;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: visible;
   }
   .grid {
@@ -139,12 +149,12 @@
   .tick {
     fill: var(--chalk-dim);
     font-family: var(--font-body);
-    font-size: 2.4px;
+    font-size: 3.2px;
   }
   .axis-label {
     fill: var(--chalk-dim);
     font-family: var(--font-chalk);
-    font-size: 2.8px;
+    font-size: 3.5px;
   }
   .bar {
     transition: opacity 0.45s ease;
@@ -158,18 +168,18 @@
   .year {
     fill: var(--chalk);
     font-family: var(--font-body);
-    font-size: 2.6px;
+    font-size: 3.4px;
   }
   .prov {
     fill: var(--accent-warn);
     font-family: var(--font-body);
-    font-size: 2px;
+    font-size: 2.7px;
     font-style: italic;
   }
   .callout {
     fill: var(--r-asia);
     font-family: var(--font-chalk);
-    font-size: 3.2px;
+    font-size: 4.2px;
     font-weight: 700;
   }
   .legend {
@@ -183,7 +193,7 @@
     align-items: center;
     gap: 0.35rem;
     font-family: var(--font-body);
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     color: var(--chalk-dim);
     transition: opacity 0.4s ease;
   }
@@ -191,15 +201,15 @@
     opacity: 0.3;
   }
   .lg i {
-    width: 12px;
-    height: 12px;
+    width: 0.85em;
+    height: 0.85em;
     border-radius: 2px;
     display: inline-block;
   }
   .chart-note {
     margin: 0.75rem 0 0;
     font-family: var(--font-body);
-    font-size: 0.72rem;
+    font-size: 0.85rem;
     color: var(--accent-warn);
     font-style: italic;
   }
