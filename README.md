@@ -1,4 +1,4 @@
-# Does Asia's university rise pass Times Higher Education's test?
+# Does the rise of Asia's universities pass Times Higher Education's test?
 
 A short visual **scrollytelling** piece on the **Times Higher Education (THE) World University
 Rankings 2027**, asking whether Asia’s rise on QS survives THE’s different scorecard.

@@ -92,7 +92,7 @@
     {/each}
 
     <text x={2.2} y={pad.t + innerH / 2} class="axis-label" text-anchor="middle" transform="rotate(-90 2.2 {pad.t + innerH / 2})">
-      universities in Top 50
+      Universities in Top 50
     </text>
   </svg>
 

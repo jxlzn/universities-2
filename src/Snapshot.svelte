@@ -4,7 +4,7 @@
 
 <div class="wrap">
   <div class="head">
-    <p class="kicker">Asia’s strip · THE year to year</p>
+    <p class="kicker">Asia advances</p>
     <h1>Region-coloured movers</h1>
     <p class="sub">Connected beeswarm of THE ranks — Asia in ochre, North America in blue</p>
   </div>

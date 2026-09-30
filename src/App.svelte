@@ -8,7 +8,7 @@
   import ChalkLotus from './lib/ChalkLotus.svelte';
   import DustPuff from './lib/DustPuff.svelte';
   import { scrollProgress, pinProgress, clamp, lerp } from './lib/scroll.js';
-  import { sources, the27Pending, ph } from './lib/data.js';
+  import { sources, the27Pending } from './lib/data.js';
 
   function goToBT() {
     window.location.href = 'https://www.businesstimes.com.sg';
@@ -21,7 +21,7 @@
   $effect(() => {
     const u = encodeURIComponent(window.location.href);
     const t = encodeURIComponent(
-      "Does Asia's university rise pass Times Higher Education's test?"
+      "Does the rise of Asia's universities pass Times Higher Education's test?"
     );
     fbShare = `https://www.facebook.com/sharer/sharer.php?u=${u}`;
     xShare = `https://x.com/intent/tweet?url=${u}&text=${t}`;
@@ -110,14 +110,13 @@
   });
 
   // ---- Act 1: regional share of THE Top 50 ----
-  // Amber [brackets] = fill on release day. Historical 2018–2026 figures are real.
   let regionActive = $state(0);
   const regionSteps = [
     `The <strong>Times Higher Education</strong> rankings spread their weight more evenly across teaching, research environment and research quality. QS, by contrast, leans heavily on reputation surveys. The THE Top 50 is therefore a useful test of how far Asia’s rise extends.`,
     `A decade ago, the Top 50 was overwhelmingly Western. In <strong>2018</strong>, only <strong style="color:var(--r-asia)">six Asian universities</strong> made the list, while North America alone held about half of the places.`,
     `By <strong>2024</strong>, Asia’s share had grown. Universities in mainland China, Hong Kong, Singapore and Japan moved further up the table as their research output and citation impact rose.`,
-    `In the <strong>2026</strong> table, <strong style="color:var(--r-asia)">ten Asian universities</strong> were in THE’s Top 50, nearly double the 2018 count, while North America’s share had declined slightly.`,
-    `In the <strong>2027</strong> table, Asia holds ${ph('Asia count in THE Top 50')} of the Top 50${ph('↑ / ↓ / flat vs 2026')}. ${ph('One-line verdict: Asia gained / held / slipped')}.`
+    `In <strong>2026</strong>, <strong style="color:var(--r-asia)">10 Asian universities</strong> were in THE’s Top 50, nearly double the 2018 count, while North America’s share had declined slightly.`,
+    `In <strong>2027</strong>, Asia still holds <strong style="color:var(--r-asia)">10 of the Top 50</strong>, unchanged from 2026. That is a plateau, not another leap. The decade rise is real. What 2027 asks more sharply is which parts of Asia pass THE’s test.`
   ];
 
   // ---- Act 2: beeswarm movers (THE 2026 → 2027) ----
@@ -143,22 +142,22 @@
 
   const beeSteps = [
     `The chart shows the top tier moving from <strong>THE 2026</strong> to <strong>THE 2027</strong>. Each mortarboard represents a university, and its colour marks its region.`,
-    `At the top, ${ph('who holds #1 — e.g. Oxford')} ${ph('streak / first-year note')}. The US and UK universities ${ph('mostly stay in place / shuffle')}.`,
-    `Further down, most of the movement comes from <strong style="color:var(--r-asia)">Asian universities</strong>. ${ph('Biggest Asian climber: school + Δ')}. ${ph('Biggest Asian faller: school + Δ')}.`,
-    `In Singapore, the <strong>National University of Singapore</strong> ${ph('NUS 2026→2027')}, while <strong>Nanyang Technological University</strong> ${ph('NTU 2026→2027')}. ${ph('One-line SG take')}.`,
-    `In Hong Kong and mainland China, <strong>HKU</strong> ${ph('HKU 2026→2027')}, <strong>CUHK</strong> ${ph('CUHK 2026→2027')}, <strong>Tsinghua</strong> ${ph('Tsinghua 2026→2027')} and <strong>Peking</strong> ${ph('Peking 2026→2027')}.`,
-    `One year of data cannot settle whether Asia is rising. But the direction of the movers shows which universities THE’s methodology currently favours: ${ph('closing verdict on Asia’s band')}.`
+    `At the top, <strong>Oxford</strong> holds first place for an 11th consecutive year. The US and UK universities mostly shuffle within the top 10: Stanford rises to join Princeton in third, while Cambridge slips to fifth.`,
+    `Within Asia, the picture splits. In Singapore, the <strong>National University of Singapore</strong> climbs from 17th to 15th, while <strong>Nanyang Technological University</strong> rises from 31st to 28th. Both move up on THE.`,
+    `Hong Kong tells a different story. <strong>HKU</strong> holds at 33rd and <strong>CUHK</strong> slips from 41st to 42nd. On THE, neither repeats the climb that QS recorded earlier this year.`,
+    `On the mainland, <strong>Tsinghua</strong> rises from 12th to 11th, ahead of ETH Zurich, while <strong>Peking</strong> holds at 13th. THE’s research-weighted measures continue to favour these two.`,
+    `One year cannot settle whether Asia is rising. But THE’s movers draw a clearer line: Singapore climbed, the mainland held near the top, and Hong Kong did not advance.`
   ];
 
   const beeHi = [
     [],
     ['oxford', 'mit'],
-    ['tokyo', 'hku', 'cuhk', 'ntu', 'nus', 'tsinghua', 'peking'],
     ['nus', 'ntu'],
-    ['hku', 'cuhk', 'tsinghua', 'peking'],
-    []
+    ['hku', 'cuhk'],
+    ['tsinghua', 'peking'],
+    ['nus', 'ntu', 'hku', 'cuhk', 'tsinghua', 'peking']
   ];
-  const beeRegion = [null, null, 'asia', 'asia', 'asia', null];
+  const beeRegion = [null, null, 'asia', 'asia', 'asia', 'asia'];
   let beeHighlight = $derived(beeHi[beeStep] ?? []);
   let beeFocusRegion = $derived(beeRegion[beeStep] ?? null);
 
@@ -166,11 +165,11 @@
   let gapActive = $state(0);
   const gapSteps = [
     `Asian universities can rank higher in one system than in another. The chart shows the gap between each university’s <strong>THE 2027 rank and QS 2027 rank</strong>. Universities to the left of the centre line rank better on THE, while those to the right rank better on QS.`,
-    `The gap is widest in Hong Kong. <strong style="color:var(--r-asia)">HKU</strong> ranks 11th on QS but ${ph('HKU THE 2027')} on THE, a difference of ${ph('HKU gap')}. <strong style="color:var(--r-asia)">CUHK</strong> ranks 18th on QS and ${ph('CUHK THE 2027')} on THE (${ph('CUHK gap')}). Reputation appears to lift both further on QS than THE’s teaching and research measures do.`,
-    `Singapore falls in between. <strong>NUS</strong> (QS 10 / THE ${ph('NUS THE 2027')}) and <strong>NTU</strong> (QS 12 / THE ${ph('NTU THE 2027')}) ${ph('still rank better on QS / show a narrower gap / have flipped')}.`,
-    `Mainland China’s research-intensive universities ${ph('still rank higher on THE / now rank higher on QS / rank similarly on both')}. <strong>Tsinghua</strong> ranks ${ph('Tsinghua THE 2027')} on THE and 14th on QS, while <strong>Peking</strong> ranks ${ph('Peking THE 2027')} on THE and 13th on QS.`,
-    `Several Western research universities also rank higher on THE. <strong>Princeton</strong>, <strong>Berkeley</strong> and <strong>Yale</strong> ${ph('still / no longer')} rank higher on THE than on QS, while <strong>Imperial College London</strong>, which benefits from QS’ reputation weighting, ${ph('still / no longer')} shows the opposite pattern.`,
-    `Whether Asian universities are rising therefore depends on which ranking is used. QS places heavy weight on reputation, while THE weighs a different mix of measures. In 2027, Asia’s results are ${ph('stronger on QS / mixed / stronger on THE')}.`
+    `The gap is widest in Hong Kong. <strong style="color:var(--r-asia)">HKU</strong> ranks 11th on QS but 33rd on THE, a difference of 22 places. <strong style="color:var(--r-asia)">CUHK</strong> ranks 18th on QS and 42nd on THE. If Asia’s rise were mainly a reputation story, this is the pattern you would expect.`,
+    `Singapore sits closer to the centre. <strong>NUS</strong> (QS 10 / THE 15) and <strong>NTU</strong> (QS 12 / THE 28) still rank better on QS, but NUS’s gap has narrowed to five places, far smaller than Hong Kong’s.`,
+    `Mainland China’s research-intensive universities now sit close on both. <strong>Tsinghua</strong> ranks 11th on THE and 14th on QS, while <strong>Peking</strong> ranks 13th on both.`,
+    `Several Western research universities also rank higher on THE. <strong>Princeton</strong>, <strong>Berkeley</strong> and <strong>Yale</strong> still rank higher on THE than on QS, while <strong>Imperial College London</strong>, which benefits from QS’ reputation weighting, still shows the opposite pattern.`,
+    `Whether Asian universities are rising therefore depends on which ranking is used, and on which city is in view. QS places heavy weight on reputation. THE weighs teaching and research differently. In 2027, that gap is largest in Hong Kong, narrower in Singapore, and smallest on the mainland.`
   ];
   const gapHi = [
     [],
@@ -178,10 +177,10 @@
     ['nus', 'ntu'],
     ['tsinghua', 'peking'],
     ['princeton', 'berkeley', 'yale', 'imperial'],
-    []
+    ['hku', 'cuhk', 'nus', 'ntu', 'tsinghua', 'peking']
   ];
-  const gapRegion = [null, 'asia', 'asia', 'asia', null, null];
-  const gapSort = ['gap', 'asia-first', 'asia-first', 'asia-first', 'gap', 'gap'];
+  const gapRegion = [null, 'asia', 'asia', 'asia', null, 'asia'];
+  const gapSort = ['gap', 'asia-first', 'asia-first', 'asia-first', 'gap', 'asia-first'];
 </script>
 
 <!-- ══ HEADER ══════════════════════════════════════════════════════════════════ -->
@@ -209,7 +208,7 @@
 <!-- ============================ HERO ============================ -->
 <div class="hero-scroll" use:pinProgress={(p) => (heroT = p)}>
   <header class="hero">
-    <h1 class="sr-only">Does Asia's university rise pass Times Higher Education's test?</h1>
+    <h1 class="sr-only">Does the rise of Asia's universities pass Times Higher Education's test?</h1>
 
     <div class="hero-inner" style="opacity:{heroFade}; transform: translateY({(1 - heroFade) * -26}px)">
       <div class="campus-stage">
@@ -218,7 +217,7 @@
       <div class="headline-stage" bind:this={headlineStage}>
         {#if headlineReady}
           <ChalkHeadline
-            before="Does Asia's university rise pass"
+            before="Does the rise of Asia's universities pass"
             insertion="Times Higher Education's"
             after="test?"
             line2="THE 2027 rankings are out"
@@ -228,7 +227,7 @@
         {/if}
       </div>
       <p class="dek" class:show={headlineDone}>
-        Times Higher Education (THE) has just released its World University Rankings 2027, months after Asian universities emerged among the biggest climbers in the QS rankings. THE weighs teaching and research differently. We look into whether Asia’s rise holds up under its methodology, and how Singapore and Hong Kong fare when the two rankings disagree.
+        Times Higher Education (THE) has just released its World University Rankings 2027, months after Asian universities emerged among the biggest climbers in the QS rankings. THE weighs teaching and research differently. We look into whether Asia’s rise holds up under its methodology, and why Singapore and Hong Kong tell different stories when the two rankings disagree.
       </p>
       <p class="byline" class:show={headlineDone}>BY LI ZUOWEI</p>
       <div class="scroll-cue" class:show={headlineDone}>
@@ -272,9 +271,9 @@
   {/if}
   <p>
     On Sep 30, 2026, <strong>Times Higher Education</strong> released its World University Rankings
-    2027. {@html ph('Who is #1 — e.g. Oxford holds / MIT takes')} {@html ph('streak / first-year note')}.
-    The result at the top matters less than the movement below it, where Asian universities have been
-    gaining ground.
+    2027. <strong>Oxford</strong> holds first place for an 11th consecutive year.
+    The result at the top matters less than the movement below it, and whether Asia’s QS climb
+    survives a ranking that puts less weight on reputation.
   </p>
   <p>
     The QS 2027 rankings, released in June, showed universities in Hong Kong and mainland China climbing
@@ -293,7 +292,7 @@
   {/snippet}
 </Scrolly>
 
-<h2 class="section-head">Asia’s strip · year to year</h2>
+<h2 class="section-head">Who THE favours · 2026 to 2027</h2>
 
 <!-- ============================ BEESWARM ============================ -->
 <div class="jump-wrap" use:scrollProgress={(p) => (beeT = clamp((p - 0.06) / 0.86))}>
@@ -326,17 +325,15 @@
 <h2 class="section-head">So how should you read Asia’s rise?</h2>
 <section class="prose">
   <p>
-    Asia’s presence in THE’s Top 50 has {@html ph('nearly doubled / more than doubled / grown to N')} since
-    2018, which shows that the rise is real. However, individual results still depend on the ranking
-    used. Hong Kong universities rank highly on QS and {@html ph('merely solid / stronger / weaker')} on THE.
-    Tsinghua and Peking are {@html ph('strong on both / split between the two')}, while Princeton and Berkeley
-    {@html ph('still rank higher / no longer rank higher')} on THE, which places more weight on research.
+    Asia’s presence in THE’s Top 50 has nearly doubled since 2018, which shows that the rise is real.
+    But 2027 is a hold, not a breakthrough, and the year matters most for what it reveals inside Asia.
+    Singapore climbed on THE. Mainland China’s flagships remain strong on both systems. Hong Kong
+    universities still rank highly on QS and merely solid on THE.
   </p>
   <p>
     As with any league table, the most useful approach is to compare rankings rather than rely on one.
-    With THE 2027 now released, the question is not only which universities moved, but whether Asia’s
-    gains hold on a ranking that does not rely mainly on reputation.
-    {@html ph('Final one-line answer to the hed')}
+    Asia’s gains largely hold on a ranking that does not rely mainly on reputation, but the sharper
+    lesson is local. QS crowned Hong Kong, while THE tells a more favourable story for Singapore.
   </p>
 </section>
 

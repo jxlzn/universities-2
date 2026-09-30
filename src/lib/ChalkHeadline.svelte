@@ -10,7 +10,7 @@
   if (typeof window !== 'undefined' && !window.__ch_loadTime) window.__ch_loadTime = Date.now();
 
   let {
-    before = "Does Asia's university rise pass",
+    before = "Does the rise of Asia's universities pass",
     insertion = "Times Higher Education's",
     after = 'test?',
     line2 = 'THE 2027 rankings are out',
@@ -38,14 +38,32 @@
     }
   });
 
-  function getCtx() {
-    if (!getCtx.ctx) getCtx.ctx = document.createElement('canvas').getContext('2d');
-    return getCtx.ctx;
+  // Measure with a real SVG <text> so layout matches paint (canvas metrics diverge on Kalam).
+  function getMeasureEl() {
+    if (typeof document === 'undefined') return null;
+    if (!getMeasureEl.el) {
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('aria-hidden', 'true');
+      svg.style.cssText =
+        'position:absolute;left:-9999px;top:0;width:0;height:0;overflow:hidden;visibility:hidden;pointer-events:none';
+      const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      text.setAttribute('font-family', "Kalam, 'Comic Sans MS', cursive");
+      text.setAttribute('font-weight', '700');
+      text.style.letterSpacing = '0';
+      text.style.fontKerning = 'normal';
+      svg.appendChild(text);
+      document.body.appendChild(svg);
+      getMeasureEl.el = text;
+    }
+    return getMeasureEl.el;
   }
+
   function measure(text, size) {
-    const ctx = getCtx();
-    ctx.font = `700 ${size}px Kalam, cursive`;
-    return ctx.measureText(text).width;
+    const el = getMeasureEl();
+    if (!el) return text.length * size * 0.5;
+    el.setAttribute('font-size', String(size));
+    el.textContent = text;
+    return el.getComputedTextLength();
   }
 
   const MAX_SIZE = 50;
@@ -100,11 +118,28 @@
     return a - Math.floor(a);
   }
 
+  // Place each glyph from full-string SVG advances (not per-char widths).
+  // Solo glyph widths ignore kerning and give uneven gaps in cursive faces like Kalam.
   function buildCharLayout(text, size, startX, seed) {
-    let x = startX;
-    return [...text].map((char, i) => {
-      const w = measure(char, size);
-      const layout = {
+    const el = getMeasureEl();
+    const chars = [...text];
+    if (!el) {
+      let x = startX;
+      return chars.map((char, i) => {
+        const w = size * 0.5;
+        const layout = { char, x, w, cx: x + w / 2, dy: 0, rot: 0, density: 1 };
+        x += w;
+        return layout;
+      });
+    }
+    el.setAttribute('font-size', String(size));
+    el.textContent = text;
+    let codeUnit = 0;
+    return chars.map((char, i) => {
+      const x = startX + (codeUnit === 0 ? 0 : el.getSubStringLength(0, codeUnit));
+      const w = el.getSubStringLength(codeUnit, char.length);
+      codeUnit += char.length;
+      return {
         char,
         x,
         w,
@@ -113,8 +148,6 @@
         rot: (hash01(i, seed + 17) - 0.5) * 3.2,
         density: 0.86 + hash01(i, seed + 41) * 0.14
       };
-      x += w;
-      return layout;
     });
   }
 
@@ -393,6 +426,9 @@
     font-family: var(--font-chalk);
     font-weight: 700;
     fill: var(--chalk);
+    letter-spacing: 0;
+    font-kerning: normal;
+    text-rendering: geometricPrecision;
     text-shadow: 0 1px 0 rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.35);
   }
   .chalk-char.insertion {
